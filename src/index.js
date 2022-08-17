@@ -54,6 +54,9 @@ app.post('/account', (request, response) => {
   return response.status(201).send();
 })
 
+// app.use(verifyExistentAccountCpf) todas as rotas abaixo desse vão passar 
+// por esse middleware
+
 app.get('/statement', verifyExistentAccountCpf, (request, response) => {
   const { customer } = request;
 
@@ -80,7 +83,7 @@ app.post('/withdraw', verifyExistentAccountCpf, (request, response) => {
   const { amount } = request.body;
   const { customer } = request;
 
-  const balance =  getBalance(customer.statement);
+  const balance = getBalance(customer.statement);
 
   if(balance < amount){
     return response.status(400).json({error: "insuficient funds!"})
